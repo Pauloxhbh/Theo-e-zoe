@@ -34,26 +34,23 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
       padding: 40px;
       box-sizing: border-box;
+      backface-visibility: hidden;
     }
 
-    .page:nth-child(odd) {
-      z-index: 100 - var(--i);
-    }
-
-    .page.flipped {
-      transform: rotateY(-180deg);
-      z-index: 0 !important;
-    }
-
-    h2 {
+    .page h2 {
       margin-top: 0;
+    }
+
+    .flipped {
+      transform: rotateY(-180deg);
     }
 
     .controls {
       position: absolute;
-      bottom: 10px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 1000;
     }
 
     button {
@@ -69,99 +66,100 @@
 </head>
 <body>
 
-  <div class="book" id="book">
-    <!-- As páginas serão inseridas aqui -->
-  </div>
+<div class="book" id="book">
+  <!-- As páginas são criadas via JavaScript -->
+</div>
 
-  <div class="controls">
-    <button onclick="flipNextPage()">Virar Página</button>
-  </div>
+<div class="controls">
+  <button onclick="flipNextPage()">Virar Página</button>
+</div>
 
-  <script>
-    const texts = [
-      {
-        title: "Queridos Theo e Zoe",
-        content: "Este livro é para lembrar tudo o que eu teria amado viver ao lado de vocês."
-      },
-      {
-        title: "O Silêncio que Carrego",
-        content: `Há um tipo de silêncio que fala mais alto do que qualquer palavra: o silêncio de quem ama alguém que nunca chegou.<br><br>
-        Quando olho para o céu, às vezes me pego imaginando:<br>
-        <em>como eu me sentiria em saber que você estaria correndo pelo quintal?</em><br>
-        <em>será que seu sorriso pareceria com o meu?</em><br><br>
-        Eu não vivi seus passos, mas eles ecoam dentro de mim. Por mais que eu não cheguei a presenciar os pequenos centímetros do seu pé.`
-      },
-      {
-        title: "Se você fosse o Theo...",
-        content: `Se você tivesse vindo, Theo,<br>
-        eu te ensinaria sobre o Cruzeiro antes mesmo de você andar.<br>
-        Sua mãe provavelmente discordaria, e a gente brigaria — como se briga rindo.<br><br>
-        Você teria sua primeira camisa celeste com o nome estampado:<br>
-        <strong>Theo, o novo camisa 10 da minha vida.</strong><br><br>
-        Eu teria segurado sua mão pequena nas arquibancadas, mesmo que só em pensamento.`
-      },
-      {
-        title: "Se você fosse a Zoe...",
-        content: `Zoe, meu amorzinho...<br>
-        você teria me chamado de “papai príncipe” nas suas festas de chá.<br>
-        Eu teria que me sentar no chão, equilibrar uma xícara rosa invisível e fazer voz engraçada para suas bonecas de cabelo bagunçado.<br><br>
-        Eu nunca teria recusado um convite seu, mesmo que fosse só pra fingir que estávamos voando em um tapete mágico feito de cobertor.<br><br>
-        Eu teria aprendido a ser delicado com você, e você teria me ensinado a ser forte por dentro.`
-      },
-      {
-        title: "Sobre o que não foi, mas é",
-        content: `A vida às vezes escreve histórias que não viram capítulo.<br><br>
-        Mas, meus filhos imaginários, vocês são mais reais do que muitas coisas que toquei.<br><br>
-        Porque amor de pai não depende do nascimento.<br>
-        Ele vive em tudo que poderia ter sido — e isso, ninguém pode tirar.`
-      },
-      {
-        title: "E se viesse Theo...",
-        content: `Theo...<br>
-        você teria sido minha missão de paz e guerra ao mesmo tempo.<br><br>
-        Eu teria discutido com sua mãe em tom de brincadeira sobre futebol,<br>
-        porque no fundo eu saberia que o time que você escolheria não importaria.<br><br>
-        Importaria só ter você gritando gol ao meu lado, mesmo que fosse do adversário.<br><br>
-        No fim, eu só queria ouvir sua voz me chamando de pai.`
-      },
-      {
-        title: "E se viesse Zoe...",
-        content: `Zoe...<br>
-        você teria sido a princesa mais nobre e elegante desse reino (abaixo da sua mãe).<br><br>
-        Eu certamente seria o homem mais feliz do mundo, sendo o amor das duas pessoas mais lindas do Universo.<br><br>
-        Eu seria delicado de uma maneira que nunca fui, porque você me ensinaria da melhor forma, em troca de um <em>"Você é o melhor papai do mundo"</em>.<br><br>
-        E isso seria as únicas coisas que eu iria querer ouvir durante anos.`
-      },
-      {
-        title: "Vocês sempre existiram",
-        content: `Às vezes me pego sorrindo por algo que nunca aconteceu.<br>
-        Às vezes me pego chorando por alguém que nunca vi.<br><br>
-        Mas em algum lugar — no sonho, na imaginação, ou além dessa vida —<br>
-        vocês existiram.<br><br>
-        E isso me basta.`
-      }
-    ];
-
-    const book = document.getElementById('book');
-    let currentPage = 0;
-
-    // Criar páginas dinamicamente
-    texts.forEach((page, index) => {
-      const div = document.createElement('div');
-      div.className = 'page';
-      div.style.setProperty('--i', index);
-      div.innerHTML = `<h2>${page.title}</h2><p>${page.content}</p>`;
-      book.appendChild(div);
-    });
-
-    function flipNextPage() {
-      const pages = document.querySelectorAll('.page');
-      if (currentPage < pages.length) {
-        pages[currentPage].classList.add('flipped');
-        currentPage++;
-      }
+<script>
+  const pagesData = [
+    {
+      title: "Queridos Theo e Zoe",
+      content: "Este livro é para lembrar tudo o que eu teria amado viver ao lado de vocês."
+    },
+    {
+      title: "O Silêncio que Carrego",
+      content: `Há um tipo de silêncio que fala mais alto do que qualquer palavra: o silêncio de quem ama alguém que nunca chegou.<br><br>
+      Quando olho para o céu, às vezes me pego imaginando:<br>
+      <em>como eu me sentiria em saber que você estaria correndo pelo quintal?</em><br>
+      <em>será que seu sorriso pareceria com o meu?</em><br><br>
+      Eu não vivi seus passos, mas eles ecoam dentro de mim. Por mais que eu não cheguei a presenciar os pequenos centímetros do seu pé.`
+    },
+    {
+      title: "Se você fosse o Theo...",
+      content: `Se você tivesse vindo, Theo,<br>
+      eu te ensinaria sobre o Cruzeiro antes mesmo de você andar.<br>
+      Sua mãe provavelmente discordaria, e a gente brigaria — como se briga rindo.<br><br>
+      Você teria sua primeira camisa celeste com o nome estampado:<br>
+      <strong>Theo, o novo camisa 10 da minha vida.</strong><br><br>
+      Eu teria segurado sua mão pequena nas arquibancadas, mesmo que só em pensamento.`
+    },
+    {
+      title: "Se você fosse a Zoe...",
+      content: `Zoe, meu amorzinho...<br>
+      você teria me chamado de “papai príncipe” nas suas festas de chá.<br>
+      Eu teria que me sentar no chão, equilibrar uma xícara rosa invisível e fazer voz engraçada para suas bonecas de cabelo bagunçado.<br><br>
+      Eu nunca teria recusado um convite seu, mesmo que fosse só pra fingir que estávamos voando em um tapete mágico feito de cobertor.<br><br>
+      Eu teria aprendido a ser delicado com você, e você teria me ensinado a ser forte por dentro.`
+    },
+    {
+      title: "Sobre o que não foi, mas é",
+      content: `A vida às vezes escreve histórias que não viram capítulo.<br><br>
+      Mas, meus filhos imaginários, vocês são mais reais do que muitas coisas que toquei.<br><br>
+      Porque amor de pai não depende do nascimento.<br>
+      Ele vive em tudo que poderia ter sido — e isso, ninguém pode tirar.`
+    },
+    {
+      title: "E se viesse Theo...",
+      content: `Theo...<br>
+      você teria sido minha missão de paz e guerra ao mesmo tempo.<br><br>
+      Eu teria discutido com sua mãe em tom de brincadeira sobre futebol,<br>
+      porque no fundo eu saberia que o time que você escolheria não importaria.<br><br>
+      Importaria só ter você gritando gol ao meu lado, mesmo que fosse do adversário.<br><br>
+      No fim, eu só queria ouvir sua voz me chamando de pai.`
+    },
+    {
+      title: "E se viesse Zoe...",
+      content: `Zoe...<br>
+      você teria sido a princesa mais nobre e elegante desse reino (abaixo da sua mãe).<br><br>
+      Eu certamente seria o homem mais feliz do mundo, sendo o amor das duas pessoas mais lindas do Universo.<br><br>
+      Eu seria delicado de uma maneira que nunca fui, porque você me ensinaria da melhor forma, em troca de um <em>"Você é o melhor papai do mundo"</em>.<br><br>
+      E isso seria as únicas coisas que eu iria querer ouvir durante anos.`
+    },
+    {
+      title: "Vocês sempre existiram",
+      content: `Às vezes me pego sorrindo por algo que nunca aconteceu.<br>
+      Às vezes me pego chorando por alguém que nunca vi.<br><br>
+      Mas em algum lugar — no sonho, na imaginação, ou além dessa vida —<br>
+      vocês existiram.<br><br>
+      E isso me basta.`
     }
-  </script>
+  ];
+
+  const book = document.getElementById('book');
+
+  // Criar páginas com z-index inverso
+  pagesData.forEach((data, i) => {
+    const page = document.createElement('div');
+    page.classList.add('page');
+    page.style.zIndex = pagesData.length - i;
+    page.innerHTML = `<h2>${data.title}</h2><p>${data.content}</p>`;
+    book.appendChild(page);
+  });
+
+  let currentPage = 0;
+
+  function flipNextPage() {
+    const pages = document.querySelectorAll('.page');
+    if (currentPage < pages.length) {
+      pages[currentPage].classList.add('flipped');
+      currentPage++;
+    }
+  }
+</script>
 
 </body>
 </html>
